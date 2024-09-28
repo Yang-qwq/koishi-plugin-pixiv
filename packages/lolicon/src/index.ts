@@ -1,19 +1,31 @@
-import { Context } from "koishi";
-import type { Config } from "../../config";  // 确保导入的是类型
-import type { CommonSourceRequest, ImageMetaData, LoliconRequest, SourceResponse } from "../../types/type";
-import { SourceProvider } from "../../types/type";
+import { Context, Schema } from "koishi";
+import type { CommonSourceRequest, ImageMetaData, LoliconRequest, SourceResponse, Config as PixlunaConfig } from "koishi-plugin-pixluna";
+import { SourceProvider } from "koishi-plugin-pixluna";
 
-export class LoliconSourceProvider extends SourceProvider {
+declare module 'koishi' {
+  interface Context {
+    // @ts-ignore
+    pixluna: SourceProviderService<any>
+  }
+}
+
+export interface Config extends PixlunaConfig { }
+export const Config = Schema.intersect([]);
+export const inject = ["pixluna"];
+
+export class LoliconSourceProvider extends SourceProvider<Config> {
   static RANDOM_IMAGE_URL = "https://api.lolicon.app/setu/v2";
 
-  config: Config;
+  name = "lolicon";
 
   async getMetaData({ context }: { context: Context }, props: CommonSourceRequest): Promise<SourceResponse<ImageMetaData>> {
     const res = await context.http
       .post<LoliconRequest>(LoliconSourceProvider.RANDOM_IMAGE_URL, props, {
+        // @ts-ignore
         proxyAgent: this.config.isProxy ? this.config.proxyHost : undefined,
       })
       .then(async (res) => {
+        // @ts-ignore
         return res.data?.[0];
       });
 
@@ -37,8 +49,9 @@ export class LoliconSourceProvider extends SourceProvider {
       }
     };
   }
+}
 
-  setConfig(config: Config) {
-    this.config = config;
-  }
+export function apply(ctx: Context, config: Config) {
+  const provider = new LoliconSourceProvider(ctx, config).setName("lolicon");
+  ctx.pixluna.registerProvider(provider);
 }

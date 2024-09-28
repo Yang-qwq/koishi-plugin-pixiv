@@ -1,0 +1,45 @@
+{
+  "name": "koishi-plugin-pixluna-lolicon",
+  "description": "PixLuna 的 Lolicon 图源支持",
+  "version": "1.0.0-beta.3",
+  "main": "lib/index.cjs",
+  "module": "lib/index.mjs",
+  "exports": {
+    ".": {
+      "import": "./lib/index.mjs",
+      "types": "./lib/index.d.ts",
+      "require": "./lib/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "dist"
+  ],
+  "license": "MPL-2.0",
+  "homepage": "https://github.com/PixLunaLab/pixluna",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PixLunaLab/pixluna"
+  },
+  "keywords": [
+    "chatbot",
+    "koishi",
+    "plugin",
+    "lolicon",
+    "色图",
+    "涩图"
+  ],
+  "peerDependencies": {
+    "koishi": "^4.17.11",
+    "koishi-plugin-pixluna": "^1.0.0-beta.4"
+  },
+  "koishi": {
+    "description": {
+      "zh": "PixLuna 的 Lolicon 图源支持"
+    }
+  },
+  "devDependencies": {
+    "koishi-plugin-pixluna": "^1.0.0-beta.4"
+  }
+}

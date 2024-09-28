@@ -1,4 +1,5 @@
 import { Schema } from "koishi";
+import { SourceProviderService } from "./service/source";
 
 export interface Config {
   isR18: boolean;
@@ -14,6 +15,9 @@ export interface Config {
   srcProvider: string;
 }
 
+// const sourceProviders: Schema<string, string>[] =
+//   SourceProviderService.getInstance<any>()?.getProviderNames()?.map(v => Schema.const(v).description(v)) || [];
+// console.log(SourceProviderService.getInstance<any>()?.getProviderNames())
 export const Config: Schema<Config> = Schema.intersect([
   // 通用设置
   Schema.object({
@@ -44,11 +48,7 @@ export const Config: Schema<Config> = Schema.intersect([
       .default(false)
       .description("是否压缩图片（能大幅度提升发送的速度，但是对图片质量有影响）"),
 
-    srcProvider: Schema.union([
-      Schema.const('lolicon').description('Lolicon API'),
-      Schema.const('none').description('无')
-    ])
-      .default('lolicon')
+    srcProvider: Schema.string()
       .description("图片来源"),
 
   }).description("通用设置"),
@@ -76,6 +76,6 @@ export const Config: Schema<Config> = Schema.intersect([
   }).description("代理设置"),
 ]);
 
-export const name = "pixiv";
+export const name = "pixluna";
 
 export default Config;
